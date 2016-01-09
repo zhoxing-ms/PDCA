@@ -1,0 +1,41 @@
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<!-- 修改一些配置时及时地更新到服务器 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+
+	<!-- 开发提示：出错时打印更详细的信息 -->
+	<constant name="struts.devMode" value="true" />
+
+	<constant name="struts.action.extension" value="do,action" />
+
+	<constant name="struts.custom.i18n.resources" value="bam" />
+
+	<constant name="struts.i18n.encoding" value="utf-8" />
+
+	<constant name="struts.multipart.saveDir" value="/tmp" />
+
+	<include file="struts-chenmin.xml"></include>
+	<include file="struts-huangfu.xml"></include>
+	<include file="struts-yupeng.xml"></include>
+	
+	<!-- 设置该应用使用的编码集为utf-8 
+	<constant name="struts.multipart.maxSize" value="1000000000" />
+	<package name="basePackage" extends="struts-default">
+		 显示上传结果页面 
+		<action name="upload" class="com.etc.pdca.action.UploadAction"
+			method="uploadFile">
+			 配置名字为fileUpload的拦截器 
+			<interceptor-ref name="fileUpload">
+				 配置允许上传文件的大小(单位字节) 
+				<param name="maximumSize">1000000000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			 动态设置保存文件的路径 (Action的属性值) 
+			<param name="savePath">/upload</param>
+		</action>
+	</package>-->
+
+</struts>

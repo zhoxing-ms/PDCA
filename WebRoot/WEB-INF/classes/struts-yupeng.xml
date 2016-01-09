@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	
+
+	<package name="yup" namespace="" extends="struts-default">
+	
+		<action name="addUser" method="addUser" class="com.etc.pdca.action.HelloWorld">
+			<result name="success">/index.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		
+		<action name="login" method="login" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+			<result name="admin">/WEB-INF/admin/admin-index.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="login1" method="login1" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/index.jsp</result>
+		</action>
+		<action name="indexTop" method="login1" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/top.jsp</result>
+		</action>
+		<action name="indexHome" method="login1" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/home.jsp</result>
+		</action>
+		<action name="performPage" method="performPage" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/perform2.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		<!-- 审核计划-->
+		<action name="check" method="check" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+		</action>
+		<action name="LookDeliver" method="LookDeliver" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/DeliverPage.jsp</result>
+		</action>
+	
+		
+	<!-- 	<action name="returnPerformPage" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">performPage.action</result>
+		</action> -->
+		<!-- 提交任务 -->
+		<action name="handInPage" method="handInPage" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/handInPage.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		<!-- 提交執行 -->
+		<action name="handInDPage"  method="handInDPage"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/handInD1Page.jsp</result>
+		</action>
+		<!-- 查看项目-->
+		<action name="checkProject"  method="checkProject"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/checkProject.jsp</result>
+		</action>
+		
+		<!-- 查看项目所有成员-->
+		<action name="selectAllUser"  method="selectAllUser"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/chart.jsp</result>
+		</action>
+		<!-- 查看下属项目-->
+		<action name="selectLowerPerform"  method="selectLowerPerform"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/lowerPerformDetails.jsp</result>
+		</action>
+		<!-- 提交公告 -->
+		<action name="bulletin"  class="com.etc.pdca.action.UserAction">
+			<result>/WEB-INF/jsp/bulletin.jsp</result>
+		</action>
+		<!-- 查看时间轴 -->
+		<action name="selectTime"  method="selectTime"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/timebase.jsp</result>
+		</action>
+		<action name="gotosubmit" class="com.etc.pdca.action.UserAction">
+				<result type="redirect">handInDPage.action?gotoid=${gotoid}</result>
+		</action>
+		<action name="gotosubmitPlan" class="com.etc.pdca.action.UserAction">
+				<result type="redirect">handInPage.action?gotoid=${gotoid}</result>
+		</action>
+		<action name="gotosubmitAction" method="gotosubmitAction"  class="com.etc.pdca.action.UserAction">
+				<result name="success">/WEB-INF/jsp/handInAPage.jsp</result>
+		</action>
+		<action name="gotosubmitCheck" method="gotosubmitCheck"  class="com.etc.pdca.action.UserAction">
+				<result  name="success">/WEB-INF/jsp/handInCPage.jsp</result>
+		</action>
+		<action name="findUserSelect"  method="findUserSelect" class="com.etc.pdca.action.UserAction">
+		</action>
+		
+		<action name="sengJson"  method="sengJson" class="com.etc.pdca.action.UserAction">
+		</action>
+		
+		<action name="getInfo"  method="getInfo" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="getInfo1"  method="getInfo1" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="overData"  method="overData" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="Data"  method="Data" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="getChart"  method="getChart" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="appraise"  method="appraise" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="getInfoOfFB"  method="getInfoOfFB" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="getInfoOfRW"  method="getInfoOfRW" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="TestMap" method="makePlanFile" class="com.etc.pdca.action.UserAction">
+		</action>
+		<action name="getTestChart" method="getTestChart" class="com.etc.pdca.action.UserAction">
+		</action>
+		
+		
+		
+		
+			
+		<action name="addBulletin" method="addBulletin" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		<action name="advanceUpdate" method="advanceUpdate" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+		</action>
+		
+		<action name="makeplanPage" method="makeplanPage" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/performDetails.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+			<action name="makeplanPage1" method="makeplanPage1" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/makeplan.jsp</result>
+			<result name="input">/home.jsp</result>
+		</action>
+		<action name="makeplanC" method="makeplanPage1" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/makeplanC.jsp</result>
+		</action>
+		
+		<action name="makeplanA"  class="com.etc.pdca.action.UserAction">
+			<result>/WEB-INF/jsp/handInAPage.jsp</result>
+		</action>
+		<!-- 更新数量 -->
+		<action name="updateNum" method="updateNum" class="com.etc.pdca.action.UserAction">
+			<!-- <result name="success" type="redirect">handInDPage.action</result> -->
+		</action>
+		
+		<!-- 删除URL -->
+		<action name="deleteUrl" method="deleteUrl" class="com.etc.pdca.action.UserAction">
+		</action>
+		
+		<action name="deleteUrlBy1" method="deleteUrlBy1" class="com.etc.pdca.action.UserAction">
+		</action>
+		<!-- 上级更改执行人 -->
+		<action name="changeplan" method="changeplan" class="com.etc.pdca.action.UserAction">
+			<result name="success" >/WEB-INF/jsp/changeplan.jsp</result>
+		</action>
+			<!-- 主动更改执行人 -->
+		<action name="changeUser"  method="changeUser"  class="com.etc.pdca.action.UserAction">
+			<result name="success" >/WEB-INF/jsp/changeUser.jsp</result>
+		</action>
+		
+		<action name="entryPage" method="entryPage" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/entry.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		<action name="addProject" method="addProject" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">indexHome.action</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		
+		<action name="returnHome" method="returnHome" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+		</action>
+		
+		<action name="addTask" method="addTask" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+		</action>
+		
+		<action name="updateTask" method="updateTask" class="com.etc.pdca.action.UserAction">
+			<result name="success" type="redirect">login1.action</result>
+		</action>
+		
+		<!--组织结构图数据  -->
+		<action name="orgData" method="orgData" class="com.etc.pdca.action.UserAction">	
+			<result name="success">orgChart.jsp</result>		
+		</action>
+		
+		
+		<!--mytest-->
+		<action name="cjtest"  method="cjtest"  class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/jsp/cjtest.jsp</result>
+		</action>
+		<action name="cjdata"  method="cjdata" class="com.etc.pdca.action.UserAction">
+		    <result name="success">/WEB-INF/jsp/TestChart.jsp</result>
+		</action>
+	</package>
+
+
+</struts>

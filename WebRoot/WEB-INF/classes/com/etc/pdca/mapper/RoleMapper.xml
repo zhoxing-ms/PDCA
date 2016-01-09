@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.RoleDao">
+	<resultMap type="Role" id="RoleResultMap">
+		<id column="id" property="id" />
+		<result column="rolename" property="rolename" />
+		<result column="grade" property="grade" />
+	</resultMap>
+	
+	<sql id="RoleColumnList">
+		id, rolename, grade
+	</sql>
+
+	<select id="selectRole" resultType="Role">
+		select * from t_role where grade!=0
+	</select>
+	<!-- 添加角色 -->
+	<insert id="addRole" parameterType="Role">
+		insert into t_role(rolename,grade) values(#{rolename}, #{grade})
+	</insert>
+	<!-- 删除角色 -->
+	<delete id="deleteRole" parameterType="int">
+		delete from t_role where id=#{id}
+	</delete>
+	<!-- 修改角色 -->
+	<update id="updateRole" parameterType="Role">
+		update t_role set rolename=#{rolename},grade=#{grade}  WHERE id=#{id}
+	</update>
+	<!-- 根据条件查找角色-->
+	<select id="getRolesByCriteria" parameterType="string" resultMap="RoleResultMap">
+		select <include refid="RoleColumnList" /> 
+		from t_role 
+		where rolename like concat(concat('%', #{condition}), '%')
+	</select>
+	
+</mapper>

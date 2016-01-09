@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.DocumentDao">
+	<resultMap type="Document" id="DocumentResultMap">
+		<id column="id" property="id" />
+		<result column="docName" property="docName" />
+		<result column="docType" property="docType" />
+	</resultMap>
+	
+	<sql id="DocumentColumnList">
+		id, docName, docType
+	</sql>
+	
+	<!-- 添加文档 -->
+	<insert id="addDocument" parameterType="Document">
+		insert into t_doc(docName, docType) values(#{docName},#{docType})
+	</insert>
+	<!-- 删除文档 -->
+	<delete id="deleteDocument" parameterType="int">
+		delete from t_doc where id=#{id}
+	</delete>
+	
+	<select id="getDocumentByType" parameterType="string" resultMap="DocumentResultMap">
+	select <include refid="DocumentColumnList" /> 
+		from t_doc  where docType=#{docType}
+	</select>
+	
+	<!-- 根据条件查找文档-->
+	<select id="getDocumentsByCriteria" parameterType="string" resultMap="DocumentResultMap">
+		select <include refid="DocumentColumnList" /> 
+		from t_doc 
+		where docName like concat(concat('%', #{condition}), '%')
+	</select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="com/etc/pdca/config/mysql_pdca.properties" />
+	<!-- 配置实体类的别名 -->
+	<typeAliases>
+		<package name="com.etc.pdca.entity" />
+	</typeAliases>
+	<!-- development: 开发模式 
+	 	 work: 工作模式
+	 -->
+	<environments default="development">  
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/etc/pdca/mapper/UserMapper.xml"/>
+		<mapper resource="com/etc/pdca/mapper/BulletinMapper.xml"/>
+		<mapper resource="com/etc/pdca/mapper/ProjectMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/TaskMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/UrlMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/RoleMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/DepartmentMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/DocumentMapper.xml" />
+		<mapper resource="com/etc/pdca/mapper/DeliverMapper.xml" />
+	</mappers>
+</configuration>

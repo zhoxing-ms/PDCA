@@ -2,3 +2,7 @@
 .myeclipse
 .settings
 .svn
+.classpath
+.mymetadata
+.project
+

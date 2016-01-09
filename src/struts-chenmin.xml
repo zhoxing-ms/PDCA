@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="cm" namespace="" extends="struts-default">
+		<action name="upload" method="execute"  class="com.etc.pdca.action.UploadAction">
+			<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		<action name="uploadcheck" method="uploadcheck"  class="com.etc.pdca.action.UploadAction">
+			<result name="success" type="redirect">indexHome.action</result>
+		</action>
+
+	<action name="changeTask" method="changeTask"  class="com.etc.pdca.action.UploadAction">
+			<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		
+		<action name="changeTaskByMyself" method="changeTaskByMyself"  class="com.etc.pdca.action.UploadAction">
+			<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		
+		<action name="addHandPlan" method="addHandPlan"  class="com.etc.pdca.action.UploadAction">
+				<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		
+		<action name="addHandDo" method="addHandDo"  class="com.etc.pdca.action.UploadAction">
+				<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		
+		<action name="addHandCheck" method="addHandCheck"  class="com.etc.pdca.action.UploadAction">
+				<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		<action name="addHandA" method="addHandA"  class="com.etc.pdca.action.UploadAction">
+				<result name="success" type="redirect">indexHome.action</result>
+		</action>
+		
+		<action name="down" method="execute" class="com.etc.pdca.action.DownloadAction">
+			<result type="stream">
+				<!-- 该参数指定二进制流的类型 -->
+				<param name="contentType">application/msword;charset=iso8859-1</param>
+				<!-- 指定返回的InputStream的方法 -->
+				<param name="inputName">target</param>
+				<param name="contentDisposition">attachment;filename=${resourceName}</param>
+				<!-- 控制文件下载时缓冲的大小 -->
+				<param name="buffersize">4096</param>
+			</result>
+		</action>
+		
+		<!-- 跳转到添加部门页面 -->
+		<action name="addDepartment" method="execute" class="com.etc.pdca.action.DepartmentAction">
+			<result name="success">/WEB-INF/admin/department/add.jsp</result>
+		</action>
+		<!-- 跳转到部门列表页面 -->
+		<action name="listDepartment" method="list" class="com.etc.pdca.action.DepartmentAction">
+			<result name="success">/WEB-INF/admin/department/list.jsp</result>
+		</action>
+		<!-- 添加部门操作 -->
+		<action name="addDepart" method="addDepartment" class="com.etc.pdca.action.DepartmentAction">
+		</action>
+		<!-- 查询部门操作 -->
+		<action name="listDepart" method="findDeparmentsByCondition" class="com.etc.pdca.action.DepartmentAction">
+		</action>
+		<!-- 修改部门操作 -->
+		<action name="updateDepart" method="updateDepartment" class="com.etc.pdca.action.DepartmentAction">
+		</action>
+		<!-- 删除部门操作 -->
+		<action name="deleteDepart" method="deleteDepartment" class="com.etc.pdca.action.DepartmentAction">
+		</action>
+		
+		<!-- 跳转到添加角色页面 -->
+		<action name="addRolePage" method="execute" class="com.etc.pdca.action.RoleAction">
+			<result name="success">/WEB-INF/admin/role/add.jsp</result>
+		</action>
+		<!-- 跳转到角色列表页面 -->
+		<action name="listRolePage" method="list" class="com.etc.pdca.action.RoleAction">
+			<result name="success">/WEB-INF/admin/role/list.jsp</result>
+		</action>
+		<!-- 添加角色操作 -->
+		<action name="addRole" method="addRole" class="com.etc.pdca.action.RoleAction">
+		</action>
+		<!-- 查询角色操作 -->
+		<action name="listRole" method="findRolesByCondition" class="com.etc.pdca.action.RoleAction">
+		</action>
+		<!-- 修改角色操作 -->
+		<action name="updateRole" method="updateRole" class="com.etc.pdca.action.RoleAction">
+		</action>
+		<!-- 删除角色操作 -->
+		<action name="deleteRole" method="deleteRole" class="com.etc.pdca.action.RoleAction">
+		</action>
+		
+		<!-- 跳转到添加用户页面 -->
+		<action name="addUserPage" method="execute" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/admin/user/add.jsp</result>
+		</action>
+		<!-- 跳转到用户列表页面 -->
+		<action name="listUserPage" method="list" class="com.etc.pdca.action.UserAction">
+			<result name="success">/WEB-INF/admin/user/list.jsp</result>
+		</action>
+		<!-- 添加用户操作 -->
+		<action name="addUsers" method="addUser" class="com.etc.pdca.action.UserAction">
+		</action>
+		<!-- 查询用户操作 -->
+		<action name="listUsers" method="findUsersByCondition" class="com.etc.pdca.action.UserAction">
+		</action>
+		<!-- 修改用户操作 -->
+		<action name="updateUsers" method="updateUser" class="com.etc.pdca.action.UserAction">
+		</action>
+		<!-- 删除用户操作 -->
+		<action name="deleteUsers" method="deleteUser" class="com.etc.pdca.action.UserAction">
+		</action>
+		<!-- 跳转到添加文档页面 -->
+		<action name="addDocumentPage" method="execute" class="com.etc.pdca.action.DocumentAction">
+			<result name="success">/WEB-INF/admin/doc/add.jsp</result>
+		</action>
+		
+		
+		<!-- 跳转到文档列表页面 -->
+		<action name="listDocumentPage" method="list" class="com.etc.pdca.action.DocumentAction">
+			<result name="success">/WEB-INF/admin/doc/list.jsp</result>
+		</action>
+		<!-- 上传文档操作 -->
+		<action name="uploadDocument" method="uploadDoc" class="com.etc.pdca.action.UploadAction">
+			<result name="success">/WEB-INF/admin/admin-index.jsp</result>
+		</action>
+		<!-- 查询文档操作 -->
+		<action name="listDocuments" method="findDocumentsByCondition" class="com.etc.pdca.action.DocumentAction">
+		</action>
+		<!-- 删除文档操作 -->
+		<action name="deleteDocument" method="deleteDocument" class="com.etc.pdca.action.DocumentAction">
+		</action>
+		<!-- 修改密码 -->
+		<action name="changePsd" method="changePsd" class="com.etc.pdca.action.UserAction">
+			<result name="success">login.jsp</result>
+			<result name="error">/WEB-INF/admin/admin-index.jsp</result>
+		</action>
+		<action name="rtchangePsd" method="rtchangePsd" class="com.etc.pdca.action.UserAction">
+			<result name="success">WEB-INF/jsp/changePassword.jsp</result>
+
+		</action>
+		
+		<!-- 用户退出操作 -->
+		<action name="userExit" method="exit" class="com.etc.pdca.action.UserAction">
+			<result name="success">login.jsp</result>
+			<result name="error">login.jsp</result>
+		</action>
+		
+	</package> 
+</struts>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.UserDao">
+	<!-- <resultMap type="User" id="UserResultReflect"> <id column="id" property="id" 
+		/> <result column="username" property="username" /> <result column="password" 
+		property="password" /> <result column="realname" property="realname" /> <result 
+		column="sex" property="sex" /> <association property="role" select="selectRole" 
+		column="role_id" javaType="Role"> </association> <association property="department" 
+		select="selectRole" column="dep_id" javaType="Department"> </association> 
+		</resultMap> -->
+	
+	<select id="getUser" parameterType="string" resultMap="UserResultMap">
+		<!-- select * from t_user u,t_role r where u.role_id = r.id and u.username=#{username} -->
+		select * from t_user where username=#{username}
+	</select>
+
+<!-- 通过id获得user -->
+      <select id="getUserById" parameterType="int" resultType="User">	
+		select * from t_user where id=#{id}
+	</select>
+
+
+	<select id="getUserByRealName" parameterType="string" resultMap="UserResultMap">
+		<!-- select * from t_user u,t_role r where u.role_id = r.id and u.realname=#{name} -->
+		select * from t_user where realname=#{name}
+	</select>
+	<select id="getUserByRoleName" parameterType="string" resultMap="UserResultMap">
+		select * from t_user t,t_role r where r.rolename=#{name} and
+		t.role_id=r.id
+	</select>
+	
+	<select id="getUserByRoleNameANDdepId" parameterType="map" resultMap="UserResultMap">
+	select * from t_user t,t_role r,t_department d where t.dep_id=d.depId and t.role_id=r.id  and 
+r.rolename like concat(concat('%',#{name1} ), '%') and d.depName like concat(concat('%', #{name2}), '%')
+	</select>
+	<select id="getUserList" resultType="User">
+		select * from t_user
+	</select>
+	<select id="findUser" parameterType="map" resultMap="UserResultMap">
+		select *
+		from t_user where username=#{username} and password=#{password}
+	</select>
+	<resultMap type="User" id="UserResultMap">
+		<association property="role" select="selectRole" column="role_id"
+			javaType="Role">
+		</association>
+		<association property="department" select="selectDepartment"
+			column="dep_id" javaType="Department">
+		</association>
+	</resultMap>
+
+	<select id="selectRole" parameterType="int" resultType="Role">
+		select *
+		from t_role where id=#{role_id}
+	</select>
+
+	<select id="selectDepartment" parameterType="int" resultType="Department">
+		select depId as departId,
+		depName as departName,
+		depDesc as departDesc
+		from t_department
+		where depId=#{dep_id}
+	</select>
+
+	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="User">
+		insert into
+		t_user(username,
+		password, realname, sex, role_id, dep_id)
+		values(#{username},
+		#{password}, #{realname}, #{sex}, #{role.id}, #{department.departId})
+	</insert>
+	<!-- 删除用户 --> 
+	<delete id="deleteUser" parameterType="int">
+		delete from t_user where id=#{id}
+	</delete> 
+	<!-- 修改用户 --> 
+	<update id="updateUser" parameterType="User">
+		update t_user set username=#{username},password=#{password},realname=#{realname},sex=#{sex},role_id=#{role.id},dep_id=#{department.departId}  
+		WHERE id=#{id}
+	</update>  
+	<!-- 根据条件查询用户 -->
+	<select id="getUsersByCriteria" parameterType="string"
+		resultMap="UserResultMap">
+		select *
+		from t_user
+		where realname like concat(concat('%',
+		#{condition}), '%') and realname != '系统管理员'
+	</select>
+	<!-- 修改密码 -->
+	<update id="changePsd" parameterType="map">
+		update  t_user set password=#{password} where username=#{username}
+	</update>  
+</mapper>

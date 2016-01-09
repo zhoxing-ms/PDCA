@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>jquery时间轴幻灯展示特效 - 站长素材</title>
+<link rel="stylesheet" type="text/css" href="style/css/styles.css" />
+<script type="text/javascript" src="style/js/jquery.js"></script>
+	<script src="style/js/jquery.timelinr-0.9.4.js" type="text/javascript"></script>
+	<script type="text/javascript"> 
+		$(function(){
+			$().timelinr({
+				autoPlay: 'true',
+				autoPlayDirection: 'forward',
+				startAt: 4
+			})
+		});
+	</script>
+</head>
+<body id="introduction">
+<div id="page">
+<div class="demotips"><a href="#">演示一</a><a href="#">演示二</a><a href="#">演示三</a></div>
+	<div id="container" class="content clearfix">
+	<div id="timeline">
+		<ul id="dates">
+			<li><a href="#1900">1900</a></li>
+			<li><a href="#199">1944</a></li>
+			<li><a href="#1999">1999</a></li>
+			<li><a href="#2011">2011</a></li>
+		</ul>
+		<ul id="issues">
+			
+			<li id="1999">
+				<img src="style/images/8.png" width="256" height="256" />
+				<h1>1999</h1>
+				<p>Donec semper quam scelerisque tortor dictum gravida. In hac habitasse platea dictumst. Nam pulvinar, odio sed rhoncus suscipit, sem diam ultrices mauris, eu consequat purus metus eu velit. Proin metus odio, aliquam eget molestie nec, gravida ut sapien. Phasellus quis est sed turpis sollicitudin venenatis sed eu odio. Praesent eget neque eu eros interdum malesuada non vel leo. Sed fringilla porta ligula.</p>
+			</li>
+<li id="199">
+				<img src="style/images/8.png" width="256" height="256" />
+				<h1>199</h1>
+				<p>nihao</p>
+			</li>
+			<li id="1999">
+			<h1></h1>
+			</li>
+			
+		</ul>
+		<div id="grad_left"></div>
+		<div id="grad_right"></div>
+	</div>
+  </div> 
+ 
+</div> 
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.etc.pdca.dao.ProjectDao">
+ 	<select id="getProjectList" parameterType="User" resultType="Project">
+ 		select id,projectname,description,startTime from t_project where user_id = #{id}
+ 	</select>
+ 	
+ 	<!-- 分页 -->
+	<select id="projectPage" resultType="Project" parameterType="map">
+	select id,projectname,description,startTime from t_project where user_id = #{id} limit #{startNum}, #{endNum} 
+	</select>
+	
+ 	<insert id="addProject" parameterType="Project">
+	insert into t_project(id,projectname,description,startTime,user_id) values (#{id},#{projectname},#{description},#{startTime},#{user.id})
+	</insert>
+	
+ 	<select id="getProjectByID" parameterType="int" resultMap="ProjectResultMap">
+ 		select * from t_project where id=#{id}
+ 	</select>
+ 	
+ 	<resultMap type="Project" id="ProjectResultMap">
+		<association property="user" select="selectUser" column="user_id" javaType="User">
+		</association> 		
+ 	</resultMap>
+ 	<select id="selectUser" parameterType="int" resultType="User">
+		select * from t_user where id=#{user_id}
+	</select>
+ 	
+ </mapper>

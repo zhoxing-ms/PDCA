@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.DeliverDao">
+	<insert id="addDeliver" parameterType="Deliver">
+		insert into t_deliver(dispatcher,receiver,content,dispatcher_time,project_id) values(
+		#{dispatcher},#{receiver},#{content},#{publishTime},#{projectId.id})
+	</insert>
+	<select id="getDeliverlist" resultMap="DeliverResultMap">
+		select * from t_deliver d,t_project p where d.project_id=p.id
+	</select>
+	<select id="getDeliverbyProjectId" resultMap="DeliverResultMap" parameterType="int">
+		select * from t_deliver d,t_project p where d.project_id=#{project_id} and d.project_id=p.id
+	</select>
+	<resultMap type="Deliver" id="DeliverResultMap">
+		<id property="id" column="id"/>
+		<result property="content" column="content" />
+		<result property="publishTime" column="dispatcher_time"/>
+		<result property="dispatcher" column="dispatcher"/>
+		<result property="receiver" column="receiver"/>
+		<association property="projectId"  column="project_id" resultMap="projectresultmap"  javaType="Project">
+		</association>
+	</resultMap>
+	<!-- <select id="selectProject1" resultMap="Project" parameterType="int">
+		select * from t_project p where p.id=#{project_id}
+	</select> -->
+	<resultMap type="Project" id="projectresultmap">
+		<result property="id" column="id"/>
+		<result property="projectname" column="projectname"/>
+		<result property="description" column="description"/>
+ 	</resultMap>
+</mapper>

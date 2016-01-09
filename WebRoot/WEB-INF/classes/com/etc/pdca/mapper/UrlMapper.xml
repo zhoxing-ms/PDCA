@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.UrlDao">
+	<insert id="addUrl" parameterType="Url" useGeneratedKeys="true"  keyProperty="id" >
+	insert into t_url (urlType,docUrl,states,subtime,endtime,task_id,url_id,urlstates) values (#{urlType},#{docUrl},#{states},#{subtime},#{endtime},#{task.id},#{url1.id},#{urlstates})
+	</insert>
+
+	<update id="updateStates" parameterType="Url">
+	update t_url set states = #{states} where id =#{id}
+	</update>
+	<update id="updataUrlstates" parameterType="Url">
+	update t_url set urlstates = #{urlstates} where id=#{id}
+	</update>
+	<!-- 删除URL -->
+	<delete id="deleteUrl" parameterType="int">
+	delete from t_url where id=#{id}
+	</delete>
+	<!-- 删除URL -->
+	<delete id="deleteUrlByProjectId" parameterType="int">
+	delete from t_project where id=#{id}
+	</delete>
+	<!-- 更改执行人  （上级） -->
+	<update id="updateUrlByTask" parameterType="Url">
+	update t_url set task_id=#{task.id} where id =#{id}
+	</update>
+	
+	<!-- 下级提交P文档 -->
+	<update id="updateUrlDoc" parameterType="Url">
+	update t_url set docUrl=#{docUrl} ,states=#{states},checkstates=#{checkstates},advance=#{advance},subtime=#{subtime} where id=#{id}
+	</update>
+	
+	<update id="updateNum" parameterType="map">
+	update t_url set num = #{num} where id =#{id}
+	</update>
+	
+	<update id="updateAdvanceD" parameterType="int" >
+	update t_url u,t_task t set advance = 'D' where t.project_id =#{id} and u.task_id = t.id
+	</update>
+	<select id="getUrlByUrlId" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url   where id=#{id}
+	</select>
+	<!-- 通过project获取URL -->
+	<select id="getUrlByProject" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url u,t_task t where t.project_id=#{id} and u.task_id = t.id 
+	</select>
+	<select id="getUrlByProjectID" parameterType="int" resultMap="UrlResultMap">
+	select distinct t.user_lower_id ,t.user_upper_id,u.task_id from t_url u,t_task t where t.project_id=#{id} and u.task_id = t.id 
+	</select>
+	<select id="getUrlUpper" parameterType="map" resultMap="UrlResultMap">
+	select distinct t.user_lower_id ,t.user_upper_id,u.task_id from t_url u,t_task t where t.project_id=#{id} and u.task_id = t.id and t.user_upper_id = #{user_upper_id}
+	</select>
+	<select id="getUrlByUserAndProject" parameterType="map" resultMap="UrlResultMap">
+	select * from t_url u,t_task t where t.project_id=#{projectId} and (t.user_upper_id=#{userId} or t.user_lower_id=#{userId}) and u.task_id = t.id  GROUP BY u.endtime ORDER BY u.endtime
+	</select>
+	
+	<select id="getCountUrlByUserAndProjectAndTimeOfOver" parameterType="map" resultType="int">
+	select Count(*) from t_url u,t_task t where t.project_id=#{projectId} and (t.user_upper_id=#{userId} or t.user_lower_id=#{userId}) and u.task_id = t.id  and u.endtime=#{endtime} and u.urlType!="PDCA" and u.states is NULL
+	</select>
+	<!-- 得到某个时间点的信息 -->
+	<select id="getUrlByUserAndProjectAndTime" parameterType="map" resultMap="UrlResultMap">
+	select * from t_url u,t_task t where t.project_id=#{projectId} and urlType!="PDCA" and 
+	u.endtime=#{endtime}
+	and (t.user_upper_id=#{userId} or t.user_lower_id=#{userId}) and u.task_id= t.id 
+	</select>
+	
+	<select id="getUrlByUrl_Id" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url   where url_id=#{id}
+	</select>
+	<!--近期任务-->
+	<select id="getWork" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  t.user_lower_id=#{id}  and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&lt;=u.endtime and (TO_DAYS(u.endtime)- TO_DAYS(NOW()))&lt;=7
+	</select>
+	<!-- 未完成任务 -->
+	<select id="getUrlOfUnfinished" parameterType="map"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  (t.user_upper_id=#{id} or t.user_lower_id=#{id}) and t.project_id =#{projectId} and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&gt;u.endtime
+	</select>
+	<!-- 完成任务 -->
+	<select id="getUrlOfFinished" parameterType="map"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  (t.user_upper_id=#{id} or t.user_lower_id=#{id}) and t.project_id =#{projectId} and u.task_id=t.id and u.states ="已完成" and u.urlType !="PDCA" and u.subtime &lt;=u.endtime
+	</select>
+	<!-- 待完成任务 -->
+	<select id="getUrlOfDone" parameterType="map"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  (t.user_upper_id=#{id} or t.user_lower_id=#{id}) and t.project_id =#{projectId} and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&lt;=u.endtime
+	</select>
+	
+	<!-- 完成情况 -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 分页 -->
+	<select id="urlPage" resultMap="UrlResultMap" parameterType="map">
+	select * from  t_url limit #{startNum}, #{endNum} 
+	</select>
+	
+	
+	<!-- 所有任务 -->
+	<select id="getCountOfExecution" parameterType="int"  resultType="int">
+	select Count(*) from t_url u,t_task t where(t.user_lower_id = #{id} or t.user_upper_id=#{id} ) and u.task_id=t.id and u.urlType !="PDCA" 
+	</select>
+	<!-- 提前完成 -->
+	<select id="getCountOfEarlier" parameterType="int"  resultType="int">
+	select Count(*) from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states="已完成" and u.urlType !="PDCA" 
+	and  (TO_DAYS(u.endtime)- TO_DAYS(u.subtime))&gt;=14
+	</select>
+	
+	<!-- 提前完成    具体任务-->
+	<select id="getOfEarlier" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states="已完成" and u.urlType !="PDCA" 
+	and  (TO_DAYS(u.endtime)- TO_DAYS(u.subtime))&gt;=14
+	</select>
+	
+	
+	<!-- 未完成 -->
+	<select id="getCountOfUnfinished" parameterType="int"  resultType="int">
+	select Count(*) from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&gt;u.endtime
+	</select>
+	
+	<!-- 未完成                        具体任务 -->
+	<select id="getOfUnfinished" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where (t.user_upper_id=#{id} or t.user_lower_id=#{id}) and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&gt;u.endtime;
+	</select>
+	
+	<select id="getOfUnfinished2" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id} and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&gt;u.endtime);
+	</select>
+	<!-- 正在进行 -->
+	<select id="getCountOfUnderway" parameterType="int"  resultType="int">
+	select Count(*) from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&lt;=u.endtime
+	</select>
+	<!-- 正在进行                       具体任务 -->
+	<select id="getOfUnderway" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states is null and u.urlType !="PDCA" and NOW()&lt;=u.endtime
+	</select>
+	
+	
+	<!-- 及时完成 -->
+	<select id="getCountOfTimely" parameterType="int"  resultType="int">
+	select Count(*) from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states="已完成" and u.urlType !="PDCA" 
+	and (TO_DAYS(u.endtime)- TO_DAYS(u.subtime))&lt;=14 and (u.endtime-u.subtime)&gt;=0
+	</select>
+	
+	<!-- 及时完成   具体任务-->
+	<select id="getOfTimely" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where (t.user_lower_id = #{id} or t.user_upper_id=#{id}) and u.task_id=t.id and u.states="已完成" and u.urlType !="PDCA" 
+	and (TO_DAYS(u.endtime)- TO_DAYS(u.subtime))&lt;=14 and (u.endtime-u.subtime)&gt;=0
+	</select>
+	
+	<!-- 获取所有下属 -->
+	<select id="getUrlOfAllUserLower" parameterType="int"  resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  (t.user_upper_id=#{id} or t.user_lower_id=#{id}) and u.task_id=t.id and u.urlType="PDCA" GROUP BY t.user_lower_id
+	</select>
+	<!-- 获取下属提前完成的项目个数 -->
+	<select id="getUrlOfAllUserLowerByEarlier" parameterType="int"  resultType="int">
+	select count(*) from t_url u,t_task t where  t.user_lower_id=#{id} and u.states="已完成" and u.urlType !="PDCA" 
+	and (TO_DAYS(u.endtime)- TO_DAYS(u.subtime)) &gt;=14 and u.task_id=t.id
+	</select>
+	<!-- 获取下属及时完成的项目个数 -->
+	<select id="getUrlOfAllUserLowerByTimely" parameterType="int"  resultType="int">
+	select count(*) from t_url u,t_task t where  t.user_lower_id=#{id} and u.states="已完成" and u.urlType !="PDCA" and u.task_id=t.id
+	and (TO_DAYS(u.endtime)- TO_DAYS(u.subtime))&lt;14 and (u.endtime-u.subtime)&gt;=0 
+	</select>
+	<!-- 获取下属未完成的项目个数 -->
+	<select id="getUrlOfAllUserLowerByUnfinished" parameterType="int"  resultType="int">
+	select count(*) from t_url u,t_task t where  t.user_lower_id=#{id} and u.urlType !="PDCA" and u.task_id=t.id
+	and u.states is null and NOW()&gt;u.endtime
+	</select>
+	<select id="getCountByC" parameterType="int"  resultType="int">
+	select count(*) from t_url   where url_id=#{id} and urlType ='D' and (states="通过" or states="未通过")
+	</select>
+	<select id="getCountByUpNum" parameterType="int"  resultType="int">
+	select count(*) from t_url   where url_id=#{id} and urlType ='D' and (states="通过" or states="等待审核")
+	</select>
+	
+	<select id="getUrlByUrl_Id_PDCA" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url   where url_id=#{id} and urlType='PDCA'
+	</select>
+	<select id="getUrlByUrl_Id_NoPDCA" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url   where url_id=#{id} and urlType!='PDCA'
+	</select>
+	
+	<select id="getUrlByPDCA" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url ,t_task t where urlType =#{urlType} and t.user_lower_id = #{task.userLower.id} and task_id=t.id 
+	</select>
+	<select id="getUrlByPDCAPage" parameterType="map" resultMap="UrlResultMap">
+	select * from t_url ,t_task t where urlType ='PDCA' and t.user_lower_id = #{id} and task_id=t.id limit #{startNum}, #{endNum} 
+	</select>
+	
+	<select id="getUrlOfAllList" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url u,t_task t,t_url r where  u.urlType =#{urlType}  and r.id=#{url1.id} and u.task_id=t.id and u.url_id=r.id  
+	</select>
+	<select id="getUrlOfCount" parameterType="Url" resultType="int">
+	select count(*) from t_url where urlType=#{urlType}  and url_id=#{url1.id} and docUrl is NOT NULL
+	</select>
+	
+	<select id="getUrlCountOfPDCA" parameterType="Url" resultType="int">
+	select count(*) from t_url u,t_task t where urlType=#{urlType} and states = #{states} and t.user_upper_id=#{task.userUpper.id} and t.project_id = #{task.project.id} and u.task_id=t.id
+	</select>
+	
+	<select id="getUrlCountOfDNum" parameterType="Url" resultType="int">
+	select SUM(f.num) from (select u.num ,urlType from t_url u,t_task t where urlType='PDCA' and t.user_upper_id=#{task.userUpper.id} and t.project_id = #{task.project.id} and u.task_id=t.id) f GROUP BY f.urlType
+	</select>
+	
+	<select id="getAllListById" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url u,t_task t,t_url r where  u.urlType ='PDCA' and t.user_upper_id=#{task.userUpper.id} and t.project_id = #{task.project.id} and r.id=#{id}  and u.task_id=t.id and u.url_id=r.id
+	</select>
+	
+	<select id="getAllListById1" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url u,t_task t where  u.urlType ='PDCA'  and t.user_upper_id=#{task.userUpper.id} and t.project_id = #{task.project.id} and u.task_id=t.id 
+	</select>
+	
+	<select id="getUrlSH" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url u,t_task t,t_url r where  u.urlType =#{urlType} and u.docUrl is not null and u.states = #{states}  and t.user_upper_id = #{task.userUpper.id} and u.task_id=t.id and u.url_id=r.id and (TO_DAYS(NOW())-TO_DAYS(u.subtime))&lt;7 
+	</select>
+	<select id="getUrlAllSH" parameterType="Url" resultMap="UrlResultMap">
+	select * from t_url u,t_task t,t_url r where   u.states = "已完成" and docUrl is not null  and t.user_upper_id = #{task.userUpper.id} and u.task_id=t.id and u.url_id=r.id  
+	</select>
+	<resultMap type="Url" id="UrlResultMap">
+	<association property="task" select="selectTask" column="task_id" javaType="Task" >
+	</association>
+	<association property="url1" select="selectUrl" column="url_id" javaType="Url" >
+	</association>
+	</resultMap>
+	<select id="selectUrl" parameterType="int" resultMap="UrlResultMap">
+	select * from t_url where id=#{url_id}
+	</select>
+	<select id="selectTask" parameterType="int" resultMap="TaskResultMap">
+		select * from t_task where id=#{task_id}
+	</select> 
+	<resultMap  type="Task" id="TaskResultMap">
+
+<association property="project" select="selectProject" column="project_id" javaType="Project" >
+</association>
+<association property="userUpper" select="selectUser2" column="user_upper_id" javaType="User" >
+</association>
+<association property="userLower" select="selectUser1" column="user_lower_id" javaType="User" >
+</association>
+</resultMap>
+	<select id="selectUser1" parameterType="int" resultType="User">
+		select * from t_user where id = #{user_lower_id}
+	</select>
+	<select id="selectUser2" parameterType="int" resultType="User">
+		select * from t_user where id = #{user_upper_id}
+	</select>
+	<select id="selectProject" parameterType="int" resultType="Project">
+		select * from t_project where id = #{project_id}
+	</select>
+</mapper>

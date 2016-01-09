@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.pdca.dao.TaskDao">
+<select id="getTask" parameterType="Task" resultType="Task">
+select * from t_task where project_id =#{project.id} and user_upper_id = #{userUpper.id} and user_lower_id=#{userLower.id}
+</select>
+
+<select id="getTaskBy1Id" parameterType="int" resultType="Task">
+select * from t_task where id=#{id}
+</select>
+<select id="getUrlUpper" parameterType="map" resultMap="TaskResultMap">
+select distinct user_lower_id ,user_upper_id,id from t_task t where t.project_id=#{id} and  t.user_upper_id = #{user_upper_id}
+</select>
+<select id="getTaskBy2Id" parameterType="Task" resultType="Task">
+select * from t_task where project_id =#{project.id}  and user_lower_id=#{userLower.id}
+</select>
+<!--  -->
+ <select id="getTaskByProjectId" parameterType="int" resultMap="TaskResultMap">
+select * from t_task where project_id=#{project_id}
+</select> 
+<select id="getTaskCount" parameterType="Task" resultType="int">
+select count(*) from t_task where project_id =#{project.id} and user_upper_id=#{userUpper.id} 
+</select>
+<insert id="addTask"  parameterType="map">
+insert into t_task (project_id,user_upper_id,user_lower_id) values(#{projectId},#{userId1},#{userId2})
+</insert>
+
+<select id="getTaskByUserId" parameterType="int" resultMap="TaskResultMap">
+select distinct project_id  from t_task where user_upper_id = #{user_upper_id}
+</select>
+<update id="updateTaskByUserLower" parameterType="Task">
+update t_task set user_lower_id=#{userLower.id} where id = #{id}
+</update>
+
+
+<resultMap  type="Task" id="TaskResultMap">
+
+<association property="project" select="selectProject" column="project_id" javaType="Project" >
+</association>
+<association property="userUpper" select="selectUser2" column="user_upper_id" javaType="User" >
+</association>
+<association property="userLower" select="selectUser1" column="user_lower_id" javaType="User" >
+</association>
+
+</resultMap>
+<select id="selectUser1" parameterType="int" resultType="User">
+select * from t_user where id = #{user_lower_id}
+</select>
+<select id="selectUser2" parameterType="int" resultType="User">
+select * from t_user where id = #{user_upper_id}
+</select>
+<select id="selectProject" parameterType="int" resultType="Project">
+select * from t_project where id = #{project_id}
+</select>
+</mapper>
